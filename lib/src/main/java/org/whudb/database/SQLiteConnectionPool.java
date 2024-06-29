@@ -1,25 +1,5 @@
-/*
- * Copyright (C) 2011 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-// modified from original source see README at the top level of this project
-/*
-** Modified to support SQLite extensions by the SQLite developers: 
-** sqlite-dev@sqlite.org.
-*/
 
-package org.spatialite.database;
+package org.whudb.database;
 
 import android.annotation.SuppressLint;
 import android.database.sqlite.SQLiteException;
@@ -37,42 +17,7 @@ import java.util.concurrent.locks.LockSupport;
 import androidx.core.os.CancellationSignal;
 import androidx.core.os.OperationCanceledException;
 
-/**
- * Maintains a pool of active SQLite database connections.
- * <p>
- * At any given time, a connection is either owned by the pool, or it has been
- * acquired by a {@link SQLiteSession}.  When the {@link SQLiteSession} is
- * finished with the connection it is using, it must return the connection
- * back to the pool.
- * </p><p>
- * The pool holds strong references to the connections it owns.  However,
- * it only holds <em>weak references</em> to the connections that sessions
- * have acquired from it.  Using weak references in the latter case ensures
- * that the connection pool can detect when connections have been improperly
- * abandoned so that it can create new connections to replace them if needed.
- * </p><p>
- * The connection pool is thread-safe (but the connections themselves are not).
- * </p>
- *
- * <h2>Exception safety</h2>
- * <p>
- * This code attempts to maintain the invariant that opened connections are
- * always owned.  Unfortunately that means it needs to handle exceptions
- * all over to ensure that broken connections get cleaned up.  Most
- * operations invokving SQLite can throw {@link SQLiteException} or other
- * runtime exceptions.  This is a bit of a pain to deal with because the compiler
- * cannot help us catch missing exception handling code.
- * </p><p>
- * The general rule for this file: If we are making calls out to
- * {@link SQLiteConnection} then we must be prepared to handle any
- * runtime exceptions it might throw at us.  Note that out-of-memory
- * is an {@link Error}, not a {@link RuntimeException}.  We don't trouble ourselves
- * handling out of memory because it is hard to do anything at all sensible then
- * and most likely the VM is about to crash.
- * </p>
- *
- * @hide
- */
+
 public final class SQLiteConnectionPool implements Closeable {
     private static final String TAG = "SQLiteConnectionPool";
 
