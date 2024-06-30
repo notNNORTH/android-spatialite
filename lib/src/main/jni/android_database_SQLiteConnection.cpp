@@ -856,7 +856,7 @@ static JNINativeMethod sMethods[] =
             (void*)nativeOpen },
     { "nativeClose", "(J)V",
             (void*)nativeClose },
-    { "nativeRegisterCustomFunction", "(JLorg/spatialite/database/SQLiteCustomFunction;)V",
+    { "nativeRegisterCustomFunction", "(JLorg/whudb/database/SQLiteCustomFunction;)V",
             (void*)nativeRegisterCustomFunction },
     { "nativeRegisterLocalizedCollators", "(JLjava/lang/String;)V",
             (void*)nativeRegisterLocalizedCollators },
@@ -913,7 +913,7 @@ static JNINativeMethod sMethods[] =
 int register_android_database_SQLiteConnection(JNIEnv *env)
 {
     jclass clazz;
-    FIND_CLASS(clazz, "org/spatialite/database/SQLiteCustomFunction");
+    FIND_CLASS(clazz, "org/whudb/database/SQLiteCustomFunction");
 
     GET_FIELD_ID(gSQLiteCustomFunctionClassInfo.name, clazz,
             "name", "Ljava/lang/String;");
@@ -926,7 +926,7 @@ int register_android_database_SQLiteConnection(JNIEnv *env)
     gStringClassInfo.clazz = jclass(env->NewGlobalRef(clazz));
 
     return jniRegisterNativeMethods(env, 
-        "org/spatialite/database/SQLiteConnection",
+        "org/whudb/database/SQLiteConnection",
         sMethods, NELEM(sMethods)
     );
 }
